@@ -3,6 +3,7 @@ let app = new Vue({
     data: {
         product: "Socks",
         brand: 'Vue Mastery',
+        onSale: true,
         selectedVariant: 0,
         altText: "A pair of socks",
         inStock: false,
@@ -41,6 +42,10 @@ let app = new Vue({
         },
         inStock() {
             return this.variants[this.selectedVariant].variantQuantity;
+        },
+        sale() {
+            sales = this.onSale ? 'sale' : 'no sale';
+            return this.brand + ' ' + this.product + ' ' + sales;
         }
     }
 })
