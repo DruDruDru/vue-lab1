@@ -90,3 +90,7 @@ textarea {
 .outOfStock {
     text-decoration: line-through
 }
+.radio {
+    width: 25px;
+    height: 25px;
+}
