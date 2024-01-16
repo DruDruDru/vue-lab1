@@ -7,6 +7,14 @@ Vue.component('product-tabs', {
         reviews: {
             type: Array,
             required: false
+        },
+        details: {
+            type: Array,
+            required: true
+        },
+        premium: {
+            type: Boolean,
+            required: true
         }
     },
     template: `
@@ -28,12 +36,29 @@ Vue.component('product-tabs', {
             <div v-show="selectedTab === 'Make a Review'">
                 <product-review></product-review>
             </div>
+            <div v-show="selectedTab === 'Shipping'">
+                <p>Shipping: {{ shipping }}</p>
+            </div>
+            <div v-show="selectedTab === 'Details'">
+                <ul>
+                    <li v-for="detail in details">{{ detail }}</li>
+                </ul>
+            </div>
         </div>
     `,
     data() {
         return {
-            tabs: ['Reviews', 'Make a Review'],
+            tabs: ['Reviews', 'Make a Review', 'Shipping', 'Details'],
             selectedTab: 'Reviews'
+        }
+    },
+    computed: {
+        shipping() {
+            if (this.premium) {
+                return "Free";
+            } else {
+                return 2.99
+            }
         }
     }
 })
@@ -114,17 +139,17 @@ Vue.component('product', {
                 <h1>{{ title }}</h1>
                 <p v-if="inStock">In stock</p>
                 <p v-else>Out of Stock</p>
-                <ul>
-                    <li v-for="detail in details">{{ detail }}</li>
-                </ul>
-                <p>Shipping: {{ shipping }}</p>
                 <div class="color-box" v-for="(variant, index) in variants" :key="variant.variantId" :style="{ backgroundColor:variant.variantColor
             }" @mouseover="updateProduct(index)"></div>
                 <button v-on:click="addToCart" :disabled="!inStock" :class="{ disabledButton: !inStock }">
                     Add to cart
                 </button>
             </div>
-            <product-tabs :reviews="reviews"></product-tabs>
+            <product-tabs 
+                :reviews="reviews" 
+                :details="details"
+                :premium="premium"
+            ></product-tabs>
         </div>
     `,
     data() {
@@ -133,8 +158,7 @@ Vue.component('product', {
             brand: 'Vue Mastery',
             selectedVariant: 0,
             altText: "A pair of socks",
-            details: ['80% cotton', '20% polyester',
-                'Gender-neutral'],
+            details: ['80% cotton', '20% polyester', 'Gender-neutral'],
             variants: [
                 {
                     variantId: 2234,
@@ -180,13 +204,6 @@ Vue.component('product', {
         inStock() {
             return this.variants[this.selectedVariant].variantQuantity
         },
-        shipping() {
-            if (this.premium) {
-                return "Free";
-            } else {
-                return 2.99
-            }
-        }
     }
 })
 
