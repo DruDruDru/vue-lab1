@@ -82,16 +82,6 @@ Vue.component('product-review', {
                     <textarea id="review" v-model="review"></textarea>
                 </p>
                 <p>
-                    <label for="rating">Rating:</label>
-                    <select id="rating" v-model.number="rating">
-                        <option>5</option>
-                        <option>4</option>
-                        <option>3</option>
-                        <option>2</option>
-                        <option>1</option>
-                    </select>
-                </p>
-                <p>
                     <p>Would you recommend this product?</p>
                     <p>
                         <label for="no">No</label>
@@ -101,6 +91,16 @@ Vue.component('product-review', {
                         <label for="yes">Yes</label>
                         <input type="radio" id="yes" class="radio" name="answer" value="yes" v-model="recommend" />
                     </p>
+                </p>
+                <p>
+                    <label for="rating">Rating:</label>
+                    <select id="rating" v-model.number="rating">
+                        <option>5</option>
+                        <option>4</option>
+                        <option :disabled="isRecommend">3</option>
+                        <option :disabled="isRecommend">2</option>
+                        <option :disabled="isRecommend">1</option>
+                    </select>
                 </p>
                 <p>
                     <input type="submit" value="Submit">
@@ -136,6 +136,11 @@ Vue.component('product-review', {
                 if (!this.rating) this.errors.push("Rating required.")
                 if (!this.recommend) this.errors.push('Recommend required.')
             }
+        }
+    },
+    computed: {
+        isRecommend() {
+            return this.recommend === 'yes'
         }
     }
 })
@@ -252,13 +257,13 @@ let app = new Vue({
     },
     methods: {
         add(id) {
-            this.cart.push(id)
-            console.log(this.cart);
+            this.cart.push(id);
+            let divv = document.createElement('div')
+            
         },
         remove(id) {
             idx = this.cart.indexOf(id);
             this.cart = this.cart.filter((value, index) => idx !== index)
-            console.log(this.cart);
         }
     }
 })
