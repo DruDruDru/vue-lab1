@@ -94,3 +94,32 @@ textarea {
     width: 25px;
     height: 25px;
 }
+.card {
+    width: 340px;
+    height: 120px;
+    padding: 5px;
+    border: 5px black dashed;
+}
+#cardContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+}
+.addCard {
+    border-color: #47A76A;
+    background-color: #34C924;
+}
+.addCard > h3, .addCard > p {
+    color: whitesmoke;
+} 
+.removeCard {
+    border-color: #E32636;
+    background-color: #9B2D30;
+}
+.removeCard > h3, .removeCard > p {
+    color: whitesmoke;
+}

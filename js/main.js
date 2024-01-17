@@ -195,6 +195,7 @@ Vue.component('product', {
             details: ['80% cotton', '20% polyester', 'Gender-neutral'],
             variants: [
                 {
+                    variantName: 'Socks',
                     variantId: 2234,
                     variantColor: 'green',
                     variantImage:
@@ -202,11 +203,12 @@ Vue.component('product', {
                     variantQuantity: 10
                 },
                 {
+                    variantName: 'Socks',
                     variantId: 2235,
                     variantColor: 'blue',
                     variantImage:
                         "./assets/vmSocks-blue-onWhite.jpg",
-                    variantQuantity: 0
+                    variantQuantity: 2
                 }
             ],
             reviews: []
@@ -215,11 +217,11 @@ Vue.component('product', {
     methods: {
         addToCart() {
             this.$emit('add-to-cart',
-                this.variants[this.selectedVariant].variantId);
+                this.variants[this.selectedVariant]);
         },
         removeFromCart() {
             this.$emit('remove-from-cart', 
-                this.variants[this.selectedVariant].variantId);
+                this.variants[this.selectedVariant]);
         },
         updateProduct(index) {
             this.selectedVariant = index;
@@ -253,17 +255,47 @@ let app = new Vue({
     el: '#app',
     data: {
         premium: true,
-        cart: []
+        cart: [],
     },
     methods: {
-        add(id) {
-            this.cart.push(id);
-            let divv = document.createElement('div')
-            
+        add(variant) {
+            this.cart.push(variant);
+
+            const container = document.getElementById('cardContainer');
+
+            let infoCard = document.createElement('div');
+            infoCard.className = 'card addCard'
+            let name = variant.variantColor + ' ' + variant.variantName
+            infoCard.innerHTML = `
+                <h3>Добавлен товар из корзины:</h3>
+                <p>${name}</p>
+            `
+            container.append(infoCard);
+            setTimeout(() => {
+                infoCard.remove()
+            }, 1000)
         },
-        remove(id) {
-            idx = this.cart.indexOf(id);
+        remove(variant) {
+            idx = this.cart.indexOf(variant);
+
+            let infoCard = document.createElement('div');
+            infoCard.className = 'card removeCard'
+
+            if (this.cart.length > 0) {
+                const container = document.getElementById('cardContainer');
+                let name = variant.variantColor + ' ' + variant.variantName
+
+                infoCard.innerHTML = `
+                    <h3>Удален товар из корзины:</h3>
+                    <p>${name}</p>
+                `
+                container.append(infoCard);
+            }
+
             this.cart = this.cart.filter((value, index) => idx !== index)
+            setTimeout(() => {
+                infoCard.remove()
+            }, 1000)
         }
-    }
+    },
 })
